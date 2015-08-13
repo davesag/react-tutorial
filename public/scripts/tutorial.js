@@ -48,12 +48,13 @@ var CommentBox = React.createClass({
 // tutorial4.js
 var Comment = React.createClass({
   render: function() {
+    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return (
       <div className="comment">
         <h2 className="commentAuthor">
           {this.props.author}
         </h2>
-        {this.props.children}
+        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
       </div>
     );
   }
