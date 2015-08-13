@@ -6,5 +6,13 @@
     {
         "author": "Paul O’Shannessy",
         "text": "React is *great*!"
+    },
+    {
+        "author": "Dave",
+        "text": "this is good"
+    },
+    {
+        "author": "Dave",
+        "text": "Very good"
     }
 ]
