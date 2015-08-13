@@ -1,9 +1,33 @@
 // tutorial1.js
+// then tutorial12.js
+// and tutorial13.js
 var CommentBox = React.createClass({
+  getInitialState: function() {
+    return {data: []};
+  },
+  loadCommentsFromServer: function() {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  componentDidMount: function() {
+    this.loadCommentsFromServer();
+    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+  },
   render: function() {
     return (
       <div className="commentBox">
-        Hello, world! I am a CommentBox.
+        <h1>Comments</h1>
+        <CommentList data={this.state.data} />
+        <CommentForm />
       </div>
     );
   }
@@ -38,19 +62,6 @@ var CommentForm = React.createClass({
   }
 });
 
-// tutorial3.js
-var CommentBox = React.createClass({
-  render: function() {
-    return (
-      <div className="commentBox">
-        <h1>Comments</h1>
-        <CommentList data={this.props.data} />
-        <CommentForm />
-      </div>
-    );
-  }
-});
-
 // tutorial4.js
 var Comment = React.createClass({
   render: function() {
@@ -66,14 +77,8 @@ var Comment = React.createClass({
   }
 });
 
-// tutorial8.js
-var data = [
-  {author: "Pete Hunt", text: "This is one comment"},
-  {author: "Jordan Walke", text: "This is *another* comment"}
-];
-
 // moved and edited from above (when it was in tutorial1)
 React.render(
-  <CommentBox data={data} />,
+  <CommentBox url="comments.json" pollInterval={2000} />,
   document.getElementById('content')
 );
